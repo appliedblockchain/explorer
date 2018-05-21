@@ -20,7 +20,7 @@
     "http-errors": "^1.6.3",
     "lodash": "^4.17.10",
     "signale": "^1.0.1",
-    "web3": "^1.0.0-beta.34"
+    "web3": "1.0.0-beta.33"
   },
   "devDependencies": {
     "@appliedblockchain/eslint-config": "^2.2.0",
