@@ -4,6 +4,10 @@
   "private": true,
   "author": "Tahseen Malik <hello@tahseen.me> (https://tahseenmalik.com/)",
   "scripts": {
-    "start": "@TODO"
+    "start": "npm run start:server",
+    "start:server": "node run.js --server --run start"
+  },
+  "dependencies": {
+    "yargs": "^11.0.0"
   }
 }
