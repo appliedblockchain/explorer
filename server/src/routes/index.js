@@ -1,10 +1,9 @@
 import express from 'express'
+import blocks from './blocks'
 
 /* eslint-disable-next-line new-cap */
 const router = express.Router()
 
-router.get('/', (request, respond) => {
-  respond.json({ message: 'Hello, World!' })
-})
+router.use(blocks)
 
 export default router
