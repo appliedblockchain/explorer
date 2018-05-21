@@ -1,0 +1,39 @@
+# --------------------------------------------------|
+#   Gitattributes                                   |
+# --------------------------------------------------|
+
+# Details per file setting:
+#   text    These files should be normalized (i.e. convert CRLF to LF).
+#   https://git-scm.com/docs/gitattributes#_end_of_line_conversion
+#
+#   binary  These files are binary and should be left untouched.
+
+## This will handle all files NOT defined below.
+* text=auto
+
+
+# For the following file types, normalize line endings to LF on
+# checkin and prevent conversion to CRLF when they are checked out
+
+## SOURCE CODE
+*.js     text eol=lf
+
+## DOCUMENTATION
+*.md         text eol=lf
+AUTHORS      text eol=lf
+CHANGELOG    text eol=lf
+CHANGES      text eol=lf
+CONTRIBUTING text eol=lf
+LICENSE      text eol=lf
+*README*     text eol=lf
+TODO         text eol=lf
+
+## LINTERS
+.eslintrc     text eol=lf
+
+## CONFIGS
+.eslintignore  text eol=lf
+.editorconfig  text eol=lf
+.gitattributes text eol=lf
+.gitignore     text eol=lf
+*.npmignore    text eol=lf
