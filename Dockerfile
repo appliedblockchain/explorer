@@ -9,7 +9,7 @@ ENV NODE_ENV=production
 
 # Copy app files to container before switching to non-root user.
 COPY package.json package-lock.json run.js $HOME/app/
-COPY server/package.json server/package-lock.json $HOME/app/server/
+COPY server/package.json $HOME/app/server/
 COPY server/build $HOME/app/server/build
 
 # Change ownership to allow installing npm dependencies.
