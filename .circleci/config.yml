@@ -18,6 +18,7 @@ jobs:
       - image: circleci/node:10
     steps:
       - setup_remote_docker
+      - checkout
       - run:
           name: Build Docker image
           working_directory: ./server
