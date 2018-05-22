@@ -9,7 +9,7 @@ jobs:
 
       - run:
           working_directory: ./client
-          command: npm i && npm build
+          command: npm i && npm run build
 
       - persist_to_workspace:
           root: client
