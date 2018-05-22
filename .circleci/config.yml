@@ -51,6 +51,7 @@ workflows:
       - build-client
       - transpile-server
       - build-docker:
+          context: org-global
           requires:
             - build-client
             - transpile-server
