@@ -1,4 +1,7 @@
 FROM node:10
+
+RUN npm install -g npm
+
 # Add non-root user with account name & user group name 'explorer'.
 # [Node best practice]
 RUN useradd --user-group --create-home --shell /bin/false explorer
