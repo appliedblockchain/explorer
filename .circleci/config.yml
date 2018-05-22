@@ -33,4 +33,5 @@ workflows:
   version: 2
   main:
     jobs:
-      - build-server
+      - build-server:
+          context: org-global
