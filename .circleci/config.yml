@@ -3,21 +3,33 @@ jobs:
   build-client:
     docker:
       - image: circleci/node:10
-
     steps:
       - checkout
-
       - run:
           working_directory: ./client
           command: npm i && npm run build
-
       - persist_to_workspace:
           root: client
           paths:
             - build
 
+  build-server:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          working_directory: ./server
+          command: docker build -t appliedblockchain/b-explorer .
+      - run:
+          name: Push Docker image
+          command: |
+            echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
+            docker push appliedblockchain/b-explorer
+
 workflows:
   version: 2
   main:
     jobs:
-      - build-client
+      - build-server
