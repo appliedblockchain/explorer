@@ -17,7 +17,8 @@
     "build": "react-scripts build",
     "serve": "serve --single --port 3000 build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clean": "rimraf build"
   },
   "dependencies": {
     "node-sass": "^4.9.0",
@@ -25,5 +26,8 @@
     "react-dom": "^16.3.2",
     "react-scripts": "^2.0.0-next.66cc7a90",
     "serve": "^6.5.7"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.2"
   }
 }
