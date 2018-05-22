@@ -32,7 +32,8 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
-      - attach_workspace
+      - attach_workspace:
+          at: ./server
       - run:
           name: Build Docker image
           working_directory: ./server
