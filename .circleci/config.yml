@@ -1,28 +1,23 @@
 version: 2
 jobs:
-  build:
+  build-client:
     docker:
       - image: circleci/node:10
 
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          - v1-dependencies-
+      - run:
+          working_directory: ./client
+          command: npm i && npm build
 
-      - run: npm install --no-save
-
-      - save_cache:
+      - persist_to_workspace:
+          root: client
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
-
-      - run: npm run build
+            - build
 
 workflows:
   version: 2
   main:
     jobs:
-      - build
+      - build-client
