@@ -32,6 +32,7 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
+      - attach_workspace
       - run:
           name: Build Docker image
           working_directory: ./server
@@ -46,4 +47,9 @@ workflows:
   version: 2
   main:
     jobs:
+      - build-client
       - transpile-server
+      - build-docker:
+          requires:
+            - build-client
+            - transpile-server
