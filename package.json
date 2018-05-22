@@ -4,10 +4,14 @@
   "private": true,
   "author": "Tahseen Malik <hello@tahseen.me> (https://tahseenmalik.com/)",
   "scripts": {
-    "start": "npm run start:server",
-    "start:server": "node run.js --server --run start"
+    "postinstall": "lerna bootstrap",
+    "start": "concurrently \"npm run start:api\" \"npm run start:client\"",
+    "start:api": "node run.js --server --run start",
+    "start:client": "node run.js --client --run serve"
   },
   "dependencies": {
+    "concurrently": "^3.5.1",
+    "lerna": "^2.11.0",
     "yargs": "^11.0.0"
   }
 }

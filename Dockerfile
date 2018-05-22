@@ -8,7 +8,9 @@ ENV HOME=/home/explorer
 ENV NODE_ENV=production
 
 # Copy app files to container before switching to non-root user.
-COPY package.json package-lock.json run.js $HOME/app/
+COPY lerna.json package.json package-lock.json run.js $HOME/app/
+
+# [1]. Copy server package files
 COPY server/package.json $HOME/app/server/
 COPY server/build $HOME/app/server/build
 
@@ -18,18 +20,10 @@ RUN chown -R explorer:explorer $HOME/*
 # Switch to newly created User
 USER explorer
 
-# Base
 WORKDIR $HOME/app
 RUN npm install
-
-# Server
-WORKDIR $HOME/app/server
-RUN npm install
-
-# Back to Base
-WORKDIR $HOME/app
 
 EXPOSE 3001
 
 # Lets run it :)
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:api"]
