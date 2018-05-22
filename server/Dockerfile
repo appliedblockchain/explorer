@@ -12,7 +12,9 @@ ENV PORT=3000
 
 WORKDIR /app
 
-COPY package.json package-lock.json build public /app/
+COPY package.json package-lock.json /app/
+COPY build/ /app/build/
+COPY public/ /app/public/
 
 RUN chown -R explorer:explorer /app
 
