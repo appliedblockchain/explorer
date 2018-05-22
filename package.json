@@ -7,7 +7,8 @@
     "postinstall": "lerna bootstrap",
     "start": "concurrently \"npm run start:api\" \"npm run start:client\"",
     "start:api": "node run.js --server --run start",
-    "start:client": "node run.js --client --run serve"
+    "start:client": "node run.js --client --run serve",
+    "build": "lerna run build"
   },
   "dependencies": {
     "concurrently": "^3.5.1",
