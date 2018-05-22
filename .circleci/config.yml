@@ -7,13 +7,26 @@ jobs:
       - checkout
       - run:
           working_directory: ./client
-          command: npm i && npm run build
+          command: npm i && npm run build && mv build public
       - persist_to_workspace:
           root: client
           paths:
+            - public
+
+  transpile-server:
+    docker:
+      - image: circelci/node:10
+    steps:
+      - checkout
+      - run:
+          working_directory: ./server
+          command: npm i && npm run build
+      - persist_to_workspace:
+          root: server
+          paths:
             - build
 
-  build-server:
+  build-docker:
     docker:
       - image: circleci/node:10
     steps:
@@ -33,5 +46,4 @@ workflows:
   version: 2
   main:
     jobs:
-      - build-server:
-          context: org-global
+      - transpile-server
