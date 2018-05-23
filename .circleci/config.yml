@@ -1,28 +1,57 @@
 version: 2
 jobs:
-  build:
+  build-client:
     docker:
       - image: circleci/node:10
-
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          - v1-dependencies-
-
-      - run: npm install --no-save
-
-      - save_cache:
+      - run:
+          working_directory: ./client
+          command: npm i && npm run build && mv build public
+      - persist_to_workspace:
+          root: client
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+            - public
 
-      - run: npm run build
+  transpile-server:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run:
+          working_directory: ./server
+          command: npm i && npm run build
+      - persist_to_workspace:
+          root: server
+          paths:
+            - build
+
+  build-docker:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - setup_remote_docker
+      - checkout
+      - attach_workspace:
+          at: ./server
+      - run:
+          name: Build Docker image
+          working_directory: ./server
+          command: docker build -t appliedblockchain/b-explorer .
+      - run:
+          name: Push Docker image
+          command: |
+            echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
+            docker push appliedblockchain/b-explorer
 
 workflows:
   version: 2
   main:
     jobs:
-      - build
+      - build-client
+      - transpile-server
+      - build-docker:
+          context: org-global
+          requires:
+            - build-client
+            - transpile-server

@@ -1,6 +1,8 @@
 import server from './app'
 import { log } from './utils'
 
-server.listen(3001, () => {
-  log.start('Listening on port 3001...')
+const port = parseInt(process.env.PORT || '3001', 10)
+
+server.listen(port, () => {
+  log.start(`Listening on port ${port}...`)
 })
