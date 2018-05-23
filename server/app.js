@@ -2,6 +2,7 @@
 const express = require('express')
 const errorHandler = require('errorhandler')
 const { errors } = require('celebrate')
+const createError = require('http-errors')
 const http = require('http')
 const path = require('path')
 const routes = require('./routes')
@@ -35,15 +36,18 @@ app.use('/api/v1', routes)
 
 
 /** ⭐️ SPA Client
- @NOTE: For development server is used only for the API. Webpack Dev server is
- used to serve client.
+ [1]. @NOTE: For development, server is only used for the API. Webpack Dev server
+ is used to serve client.
+ [2]. Since we are not serving client for routes in development they must be catched.
  */
-if (isProduction()) {
+if (isProduction()) { /* [1] */
   const index = path.resolve(clientDir, 'index.html')
 
   app.get('*', (request, respond) => {
     respond.sendFile(index)
   })
+} else { /* [2] */
+  app.use((req, res, next) => next(createError(404, `Path '${req.path}' does not exist.`)))
 }
 
 
