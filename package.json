@@ -16,6 +16,7 @@
     "postbuild": "mv client/build server/client"
   },
   "dependencies": {
+    "@appliedblockchain/bdash": "^0.2.1",
     "celebrate": "^8.0.0",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
