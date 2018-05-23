@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+'use strict'
+
+const { argv } = require('yargs')
+const { spawn } = require('child_process')
+
+const cmd = `npm run ${argv.s}`
+
+const options = { stdio: 'inherit', cwd: 'client', shell: true }
+spawn(cmd, [], options)

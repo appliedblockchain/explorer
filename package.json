@@ -4,15 +4,33 @@
   "private": true,
   "author": "Tahseen Malik <hello@tahseen.me> (https://tahseenmalik.com/)",
   "scripts": {
-    "postinstall": "lerna bootstrap",
-    "start": "concurrently \"npm run start:api\" \"npm run start:client\"",
-    "start:api": "node run.js --server --run start",
-    "start:client": "node run.js --client --run serve",
-    "build": "lerna run build"
+    "start": "node server/.",
+    "start:dev": "concurrently -n S,A \"npm run api\" \"npm run client\"",
+    "api": "NODE_ENV=development PORT=3001 nodemon server/.",
+    "client": "./run -s start",
+    "test": "jest",
+    "lint": "eslint server",
+    "clean": "rimraf server/client",
+    "prebuild": "npm run clean",
+    "build": "./run -s build",
+    "postbuild": "mv client/build server/client"
   },
   "dependencies": {
+    "celebrate": "^8.0.0",
+    "errorhandler": "^1.5.0",
+    "express": "^4.16.3",
+    "http-errors": "^1.6.3",
+    "lodash": "^4.17.10",
+    "signale": "^1.0.1",
+    "web3": "1.0.0-beta.33"
+  },
+  "devDependencies": {
+    "@appliedblockchain/eslint-config": "^2.2.0",
     "concurrently": "^3.5.1",
-    "lerna": "^2.11.0",
+    "eslint": "4.15.0",
+    "jest": "22.1.2",
+    "nodemon": "^1.17.4",
+    "rimraf": "^2.6.2",
     "yargs": "^11.0.0"
   }
 }

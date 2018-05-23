@@ -1,12 +1,12 @@
-import express from 'express'
-import cors from 'cors'
-import errorHandler from 'errorhandler'
-import createError from 'http-errors'
-import { errors } from 'celebrate'
-import http from 'http'
-import routes from './routes'
-import { isDevelopment } from './config'
-import { log } from './utils'
+'use strict'
+const express = require('express')
+const errorHandler = require('errorhandler')
+const { errors } = require('celebrate')
+const http = require('http')
+const path = require('path')
+const routes = require('./routes')
+const { isDevelopment, isProduction } = require('./config')
+const { log } = require('./utils')
 
 const app = express()
 
@@ -17,12 +17,16 @@ app.disable('x-powered-by')
 
 /**
  🌍 Global express middlewares
- [1]. Add Cross origin resource sharing support.
- [2]. Add express error handler for development.
+ [1]. Add express error handler for development.
+ [2]. Serve React SPA compiled static files.
  */
-app.use(cors())
 if (isDevelopment()) {
-  app.use(errorHandler())
+  app.use(errorHandler()) /* [1] */
+}
+
+const clientDir = path.resolve(__dirname, 'client')
+if (isProduction()) {
+  app.use(express.static(clientDir)) /* [2] */
 }
 
 
@@ -30,8 +34,17 @@ if (isDevelopment()) {
 app.use('/api/v1', routes)
 
 
-/** 🧐 Catch unknown routes */
-app.use((req, res, next) => next(createError(404, `Path '${req.path}' does not exist.`)))
+/** ⭐️ SPA Client
+ @NOTE: For development server is used only for the API. Webpack Dev server is
+ used to serve client.
+ */
+if (isProduction()) {
+  const index = path.resolve(clientDir, 'index.html')
+
+  app.get('*', (request, respond) => {
+    respond.sendFile(index)
+  })
+}
 
 
 /**
@@ -63,4 +76,4 @@ app.use((err, request, respond, next) => {
 })
 /* eslint-enable no-unused-vars */
 
-export default app
+module.exports = app

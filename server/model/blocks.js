@@ -1,4 +1,5 @@
-import { times } from 'lodash'
+'use strict'
+const times = require('lodash/times')
 
 /**
  Get Blocks
@@ -8,7 +9,7 @@ import { times } from 'lodash'
  @TODO: Handle blocks `offset`.
  */
 
-export const getBlocks = async (web3, {
+const getBlocks = async (web3, {
   limit = 10,
   order = 'desc'
 } = {}) => {
@@ -21,4 +22,8 @@ export const getBlocks = async (web3, {
   const blocks = await Promise.all(blocksPromise)
 
   return blocks
+}
+
+module.exports = {
+  getBlocks
 }
