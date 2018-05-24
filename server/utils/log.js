@@ -1,4 +1,5 @@
-import { Signale } from 'signale'
+'use strict'
+const { Signale } = require('signale')
 
 /**
  👋 Hackable console logger
@@ -10,4 +11,4 @@ log.config({
   displayTimestamp: true
 })
 
-export { log }
+module.exports = log

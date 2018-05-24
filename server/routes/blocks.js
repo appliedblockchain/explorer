@@ -1,11 +1,11 @@
-import express from 'express'
-import { Joi, celebrate as validate } from 'celebrate'
-import { web3 } from '../config'
-import { withError } from './helpers'
-import { getBlocks as $getBlocks } from '../model'
+'use strict'
+const express = require('express')
+const { Joi, celebrate: validate } = require('celebrate')
+const { web3 } = require('../config')
+const { withError } = require('./helpers')
+const { getBlocks: $getBlocks } = require('../model/blocks')
 
-/* eslint-disable-next-line new-cap */
-const router = express.Router()
+const router = express.Router() // eslint-disable-line new-cap
 
 
 /**
@@ -63,4 +63,4 @@ router.get(
   getBlock
 )
 
-export default router
+module.exports = router

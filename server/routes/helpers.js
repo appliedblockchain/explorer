@@ -1,3 +1,5 @@
+'use strict'
+
 /**
  @NOTE: Express does not support ES2017 `async` functions by default so using it
  as handlers without try/catch block can cause the handler to not pass on error
@@ -7,10 +9,12 @@
  */
 
 /* :: Function -> Function */
-export const withError = routeHandler => async (request, respond, next) => {
+const withError = routeHandler => async (request, respond, next) => {
   try {
     await routeHandler(request, respond, next)
   } catch (error) {
     next(error)
   }
 }
+
+module.exports = { withError }
