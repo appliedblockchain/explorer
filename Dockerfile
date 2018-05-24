@@ -11,7 +11,7 @@ ENV HOME=/home/explorer
 ENV NODE_ENV=production
 
 # Copy app files to container before switching to non-root user.
-COPY package.json package-lock.json  $HOME/app/
+COPY package.json $HOME/app/
 COPY server $HOME/app/server
 
 # Change ownership to allow installing npm dependencies.
