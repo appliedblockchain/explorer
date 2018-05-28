@@ -1,0 +1,27 @@
+.root {
+  margin-bottom: 3.5rem;
+}
+
+.mono {
+  font-family: menlo, 'Courier New', Courier, monospace;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.link {
+  text-decoration: none;
+  color: #d02d52;
+}
+
+.link:hover, .link:focus {
+  text-decoration: underline;
+}
+
+.data {
+  box-sizing: border-box;
+  display: block;
+  max-width: 708px;
+  overflow: auto;
+}

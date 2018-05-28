@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import isNull from 'lodash/isNull'
+import { Navbar, Main, TransactionView } from '../components'
 import * as api from '../api'
 
 export class Transaction extends Component {
@@ -13,8 +14,8 @@ export class Transaction extends Component {
   }
 
   async getTransaction() {
-    const { txHash } = this.props.match.params
-    const transaction = await api.getTransaction(txHash)
+    const { txhash } = this.props.match.params
+    const transaction = await api.getTransaction(txhash)
 
     this.setState({ transaction })
   }
@@ -27,9 +28,12 @@ export class Transaction extends Component {
     }
 
     return (
-      <pre>
-        {JSON.stringify(transaction, null, 2)}
-      </pre>
+      <Fragment>
+        <Navbar />
+        <Main>
+          <TransactionView info={transaction} />
+        </Main>
+      </Fragment>
     )
   }
 }
