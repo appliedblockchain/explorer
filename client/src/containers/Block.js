@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import isNull from 'lodash/isNull'
-import { Main, Navbar, BlockView } from '../components'
+import { Main, Navbar, BlockView, Loading } from '../components'
 import * as api from '../api'
 
 export class Block extends Component {
@@ -24,7 +24,7 @@ export class Block extends Component {
     const { block } = this.state
 
     if (isNull(block)) {
-      return <p>Loading...</p>
+      return <Loading />
     }
 
     return (

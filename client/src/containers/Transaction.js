@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import isNull from 'lodash/isNull'
-import { Navbar, Main, TransactionView } from '../components'
+import { Navbar, Main, TransactionView, Loading } from '../components'
 import * as api from '../api'
 
 export class Transaction extends Component {
@@ -24,7 +24,7 @@ export class Transaction extends Component {
     const { transaction } = this.state
 
     if (isNull(transaction)) {
-      return <p>Loading...</p>
+      return <Loading />
     }
 
     return (

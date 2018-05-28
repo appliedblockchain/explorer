@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import isNull from 'lodash/isNull'
-import { Navbar, Main, HomeView } from '../components'
+import { Navbar, Main, HomeView, Loading } from '../components'
 import * as api from '../api'
 
 export class Home extends Component {
@@ -29,7 +29,7 @@ export class Home extends Component {
     const { blocks, transactions } = this.state
 
     if (isNull(blocks) || isNull(transactions)) {
-      return <p>Loading...</p>
+      return <Loading />
     }
 
     return (
