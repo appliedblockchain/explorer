@@ -1,0 +1,21 @@
+.blockInfo {
+  margin-bottom: 3.5rem;
+}
+
+.blockTitle {
+  margin-bottom: 1rem;
+}
+
+.mono {
+  font-family: menlo, 'Courier New', Courier, monospace;
+}
+
+.tx {
+  font-family: menlo, 'Courier New', Courier, monospace;
+  text-decoration: none;
+  color: #d02d52;
+}
+
+.tx:hover, .tx:focus {
+  text-decoration: underline;
+}

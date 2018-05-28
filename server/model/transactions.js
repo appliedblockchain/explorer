@@ -14,7 +14,7 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
     const { transactions } = await web3.eth.getBlock(blockNumber, true)
 
     if (transactions.length > 0) {
-      txs.push(transactions)
+      txs.push(...transactions)
     }
 
     blockNumber -= 1
