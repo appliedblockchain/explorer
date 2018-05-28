@@ -11,6 +11,11 @@ export class Home extends Component {
 
   componentDidMount() {
     this.getData()
+    this.polling = setInterval(() => this.getData(), 5000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.polling)
   }
 
   async getData() {

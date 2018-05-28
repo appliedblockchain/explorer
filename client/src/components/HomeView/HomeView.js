@@ -24,38 +24,7 @@ const CustomTableCell = withStyles(theme => ({
 
 const HomeView = ({ blocks, transactions, classes }) => (
   <Fragment>
-    <section className={classes.section}>
-      <Text variant="title" className={classes.title}>Latest Blocks</Text>
-
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell>Block</CustomTableCell>
-              <CustomTableCell numeric>Transactions</CustomTableCell>
-              <CustomTableCell>Validator</CustomTableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {blocks.map(b => (
-              <TableRow className={classes.row} key={b.number}>
-                <CustomTableCell>
-                  <Link className={classes.link} to={`/blocks/${b.number}`}>
-                    {b.number}
-                  </Link>
-                </CustomTableCell>
-                <CustomTableCell numeric>{b.transactions.length}</CustomTableCell>
-                <CustomTableCell>
-                  <span className={classes.mono}>{b.miner}</span>
-                </CustomTableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </section>
-
+    {/** Transactions */}
     <section className={classes.section}>
       <Text variant="title" className={classes.title}>Latest Transactions</Text>
 
@@ -80,6 +49,39 @@ const HomeView = ({ blocks, transactions, classes }) => (
                   <Link className={classes.link} to={`/transactions/${unprefixHex(tx.hash)}`}>
                     <span className={classes.mono}>{tx.hash}</span>
                   </Link>
+                </CustomTableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    </section>
+
+    {/** Blocks */}
+    <section className={classes.section}>
+      <Text variant="title" className={classes.title}>Latest Blocks</Text>
+
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <CustomTableCell>Block</CustomTableCell>
+              <CustomTableCell numeric>Transactions</CustomTableCell>
+              <CustomTableCell>Validator</CustomTableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {blocks.map(b => (
+              <TableRow className={classes.row} key={b.number}>
+                <CustomTableCell>
+                  <Link className={classes.link} to={`/blocks/${b.number}`}>
+                    {b.number}
+                  </Link>
+                </CustomTableCell>
+                <CustomTableCell numeric>{b.transactions.length}</CustomTableCell>
+                <CustomTableCell>
+                  <span className={classes.mono}>{b.miner}</span>
                 </CustomTableCell>
               </TableRow>
             ))}
