@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 import Text from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'
+import TableHead from '@material-ui/core/TableHead'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
@@ -11,11 +12,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import style from './style.module.scss'
 
 const EventLogs = ({ logs }) => (
-  <section>
+  <section className={style.root}>
     <div className={style.title}>
       <Text variant="title">
         Event Logs
@@ -37,6 +39,53 @@ const EventLogs = ({ logs }) => (
 
 EventLogs.propTypes = {
   logs: PropTypes.array.isRequired
+}
+
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white
+  },
+  body: {
+    fontSize: 14
+  }
+}))(TableCell)
+
+const MethodParams = ({ name, params }) => (
+  <section className={style.root}>
+    <div className={style.title}>
+      <Text variant="title">
+        <span className={style.methodName}>{name}( )</span>
+      </Text>
+    </div>
+
+    <Paper>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <CustomTableCell>Param</CustomTableCell>
+            <CustomTableCell>Type</CustomTableCell>
+            <CustomTableCell>Value</CustomTableCell>
+          </TableRow>
+        </TableHead>
+
+        <TableBody>
+          {params.map(param => (
+            <TableRow key={param.name}>
+              <CustomTableCell>{param.name}</CustomTableCell>
+              <CustomTableCell>{param.type}</CustomTableCell>
+              <CustomTableCell>{String(param.value)}</CustomTableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+  </section>
+)
+
+MethodParams.propTypes = {
+  name: PropTypes.string.isRequired,
+  params: PropTypes.array.isRequired
 }
 
 const TransactionView = ({ info }) => (
@@ -95,6 +144,7 @@ const TransactionView = ({ info }) => (
       </Paper>
     </section>
 
+    {info.enhanced && <MethodParams name={info.method} params={info.params} />}
     {!isEmpty(info.logs) && <EventLogs logs={info.logs} />}
   </Fragment>
 )
