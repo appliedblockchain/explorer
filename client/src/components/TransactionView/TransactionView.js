@@ -53,6 +53,12 @@ const TransactionView = ({ info }) => (
               <span className={style.data}>{info.input}</span>
             </TableCell>
           </TableRow>
+
+          {/** Events */}
+          <TableRow>
+            <TableCell component="th" scope="row">Events</TableCell>
+            <TableCell>{info.logs.length}</TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </Paper>
