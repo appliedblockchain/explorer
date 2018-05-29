@@ -4,7 +4,7 @@ const { isDevelopment } = require('../utils')
 
 const url = isDevelopment()
   ? 'https://rinkeby.infura.io/RE5yuTqXCfgmv4Z0xFLu'
-  : process.env.ETHEREUM_JSON_ENDPOINT
+  : process.env.ETHEREUM_JSONRPC_ENDPOINT
 const provider = new Web3.providers.HttpProvider(url)
 const web3 = new Web3(provider)
 
