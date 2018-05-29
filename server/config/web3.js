@@ -1,6 +1,6 @@
 'use strict'
 const Web3 = require('web3')
-const { isDevelopment } = require('../utils')
+const { isDevelopment } = require('./env')
 
 const url = isDevelopment()
   ? 'https://rinkeby.infura.io/RE5yuTqXCfgmv4Z0xFLu'
