@@ -28,7 +28,12 @@ const getTransactions = withError(async (request, respond) => {
 /* GET /api/v1/transactions/:txhash */
 const getTrasaction = withError(async (request, respond) => {
   const { txhash } = request.params
-  const transaction = await web3.eth.getTransaction(prefixHex(txhash))
+  const [ transaction, { logs } ] = await Promise.all([
+    web3.eth.getTransaction(prefixHex(txhash)),
+    web3.eth.getTransactionReceipt(prefixHex(txhash))
+  ])
+
+  transaction.logs = logs
 
   respond.json({
     status: 'OK',
