@@ -1,9 +1,15 @@
 'use strict'
-const isNil = require('lodash/isNil')
+const _ = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
 const { web3, getContractConfig } = require('../config')
 
+/**
+ [1]. @NOTE: web3.eth.getBlock() is returning null sometimes. This is unexpected
+ behaviour which is resolved using _.get().
+ */
+
+/* :: (object, object) -> Promise<object> */
 const getTransactions = async (web3, { limit = 10 } = {}) => {
   const currBlockNumber = await web3.eth.getBlockNumber()
   const txs = []
@@ -11,7 +17,8 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
   let blockNumber = currBlockNumber
 
   while (txs.length < limit) {
-    const { transactions } = await web3.eth.getBlock(blockNumber, true)
+    const block = await web3.eth.getBlock(blockNumber, true) /* [1] */
+    const transactions = _.get(block, 'transactions', []) /* [1] */
 
     if (transactions.length > 0) {
       txs.push(...transactions)
@@ -42,7 +49,7 @@ const getTransaction = async (txhash) => {
 
   /** Check if the transaction is for a known contract. Return extra info if true. */
   const contractInfo = contracts[transaction.to]
-  if (!isNil(contractInfo)) {
+  if (!_.isNil(contractInfo)) {
     abiDecoder.addABI(contractInfo.abi)
     const info = abiDecoder.decodeMethod(transaction.input)
 
