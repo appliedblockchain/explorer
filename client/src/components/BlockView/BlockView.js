@@ -28,7 +28,7 @@ const BlockView = ({ info }) => (
             <TableRow>
               <TableCell component="th" scope="row">Created</TableCell>
               <TableCell>
-                {moment(info.timestamp).format('MMMM Do YYYY, h:mm:ss a')}
+                {moment(info.timestamp * 1000).format('MMMM Do YYYY, h:mm:ss a')}
               </TableCell>
             </TableRow>
 
