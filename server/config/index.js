@@ -2,5 +2,6 @@
 
 module.exports = {
   ...require('./env'),
-  ...require('./web3')
+  ...require('./web3'),
+  ...require('./contract')
 }

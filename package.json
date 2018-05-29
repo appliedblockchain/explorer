@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@appliedblockchain/bdash": "^0.2.1",
+    "abi-decoder": "^1.1.0",
     "celebrate": "^8.0.0",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
