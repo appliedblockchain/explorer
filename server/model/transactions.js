@@ -38,37 +38,38 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
 const { contracts } = getContractConfig()
 
 /**
- Since we know that the transaction is a calling a known contract we can get the
- event name and params using the contract ABI.
- @TODO: clean up code and optimise
+ [1]. A object with event ABI signature as keys and event ABI as value.
+ [2]. Since we know that the transaction is a calling a known contract we can
+ get the event name and params using the contract ABI.
  */
 
 /* :: (object, Array<object>) -> Array<object> */
-const getEventLogs = (contractInfo, _logs) => {
-  const events = contractInfo.abi.filter(({ type }) => type === 'event')
-  const sigs = events.reduce((sigs, e) =>
-    Object.assign(sigs, { [web3.eth.abi.encodeEventSignature(e)]: e }, {}))
+const getEventLogs = (eventsABI, logs) => {
+  const eventSigs = eventsABI.reduce((sigs, eventABI) => ({ /* [1] */
+    ...sigs,
+    [web3.eth.abi.encodeEventSignature(eventABI)]: eventABI
+  }), {})
 
-  const logs = _logs.map((log) => {
-    const [ sig ] = log.topics
-    const { name } = sigs[sig]
+  const addInfo = (log) => { /* [2] */
+    const [ eventSig ] = log.topics
+    const eventABI = eventSigs[eventSig]
 
-    const [ event ] = events.filter(e => e.name === name)
-    const params = _.isEmpty(event.inputs)
-      ? null
-      : web3.eth.abi.decodeLog(event.inputs, log.data, log.topics[0])
+    const { name } = eventABI
+    const params = eventABI.inputs.length > 0
+      ? web3.eth.abi.decodeLog(eventABI.inputs, log.data, log.topics)
+      : null
 
     return { ...log, name, params }
-  })
+  }
 
-  return logs
+  return logs.map(addInfo)
 }
 
 /* :: string -> Promise<object> */
-const getTransaction = async (txhash) => {
+const getTransaction = async (txHash) => {
   const [ transaction, { logs } ] = await Promise.all([
-    web3.eth.getTransaction(prefixHex(txhash)),
-    web3.eth.getTransactionReceipt(prefixHex(txhash))
+    web3.eth.getTransaction(prefixHex(txHash)),
+    web3.eth.getTransactionReceipt(prefixHex(txHash))
   ])
 
   transaction.logs = logs
@@ -84,7 +85,9 @@ const getTransaction = async (txhash) => {
     transaction.method = info.name
     transaction.params = info.params
     transaction.toName = contractInfo.name
-    transaction.logs = getEventLogs(contractInfo, transaction.logs)
+
+    const eventsABI = contractInfo.abi.filter(({ type }) => type === 'event')
+    transaction.logs = getEventLogs(eventsABI, logs)
   }
 
   return transaction
