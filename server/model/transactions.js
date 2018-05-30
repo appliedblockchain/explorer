@@ -37,6 +37,33 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
 
 const { contracts } = getContractConfig()
 
+/**
+ Since we know that the transaction is a calling a known contract we can get the
+ event name and params using the contract ABI.
+ @TODO: clean up code and optimise
+ */
+
+/* :: (object, Array<object>) -> Array<object> */
+const getEventLogs = (contractInfo, _logs) => {
+  const events = contractInfo.abi.filter(({ type }) => type === 'event')
+  const sigs = events.reduce((sigs, e) =>
+    Object.assign(sigs, { [web3.eth.abi.encodeEventSignature(e)]: e }, {}))
+
+  const logs = _logs.map((log) => {
+    const [ sig ] = log.topics
+    const { name } = sigs[sig]
+
+    const [ event ] = events.filter(e => e.name === name)
+    const params = _.isEmpty(event.inputs)
+      ? null
+      : web3.eth.abi.decodeLog(event.inputs, log.data, log.topics[0])
+
+    return { ...log, name, params }
+  })
+
+  return logs
+}
+
 /* :: string -> Promise<object> */
 const getTransaction = async (txhash) => {
   const [ transaction, { logs } ] = await Promise.all([
@@ -57,6 +84,7 @@ const getTransaction = async (txhash) => {
     transaction.method = info.name
     transaction.params = info.params
     transaction.toName = contractInfo.name
+    transaction.logs = getEventLogs(contractInfo, transaction.logs)
   }
 
   return transaction

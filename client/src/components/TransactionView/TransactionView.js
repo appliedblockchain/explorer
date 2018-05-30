@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
+import isString from 'lodash/isString'
+import ReactJson from 'react-json-view'
 import Text from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
@@ -24,13 +26,16 @@ const EventLogs = ({ logs }) => (
       </Text>
     </div>
 
-    {logs.map(({ data, topics, logIndex }, idx) => (
-      <ExpansionPanel key={idx}>
+    {logs.map(({ id, data, topics, logIndex, name, params }, idx) => (
+      <ExpansionPanel key={id}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Text>Event {idx + 1}</Text>
+          <Text>{isString(name) ? `${name}( )` : `Event ${idx + 1}`}</Text>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <pre>{JSON.stringify({ data, topics, logIndex }, null, 2)}</pre>
+          {isString(name)
+            ? <ReactJson src={{ id, logIndex, params }} />
+            : <ReactJson src={{ id, data, topics, logIndex }} />
+          }
         </ExpansionPanelDetails>
       </ExpansionPanel>
     ))}
