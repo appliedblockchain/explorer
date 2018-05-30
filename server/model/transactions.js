@@ -56,6 +56,7 @@ const getTransaction = async (txhash) => {
     transaction.enhanced = true
     transaction.method = info.name
     transaction.params = info.params
+    transaction.toName = contractInfo.name
   }
 
   return transaction

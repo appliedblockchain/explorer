@@ -92,9 +92,7 @@ const TransactionView = ({ info }) => (
   <Fragment>
     <section className={style.root}>
       <div className={style.title}>
-        <Text variant="title">
-          Transaction Info
-        </Text>
+        <Text variant="title">Transaction Info</Text>
       </div>
 
       <Paper>
@@ -112,6 +110,7 @@ const TransactionView = ({ info }) => (
             <TableRow>
               <TableCell component="th" scope="row">To</TableCell>
               <TableCell>
+                {info.enhanced && <span>{info.toName}—</span>}
                 <span className={style.mono}>{info.to}</span>
               </TableCell>
             </TableRow>
