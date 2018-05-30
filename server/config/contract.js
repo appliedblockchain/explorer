@@ -2,13 +2,15 @@
 const fs = require('fs')
 const path = require('path')
 
-const contractConfigPath = path.resolve(__dirname, '../../config.json')
+const defaultContractPath = path.resolve(__dirname, '../../config.json')
+const contractConfigPath = process.env.CONFIG_FILE_PATH || defaultContractPath
 const configExists = fs.existsSync(contractConfigPath)
 
 const getContractConfig = () => configExists
   ? require(contractConfigPath)
   : {
-    contracts: {}
+    contracts: {},
+    addressBook: {}
   }
 
 module.exports = { getContractConfig }
