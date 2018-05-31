@@ -28,7 +28,7 @@ const getTransactions = withError(async (request, respond) => {
 /* GET /api/v1/transactions/:txhash */
 const getTrasaction = withError(async (request, respond) => {
   const { txhash } = request.params
-  const transaction = await model.getTransaction(txhash)
+  const transaction = await model.getTransaction(web3, txhash)
 
   respond.json({
     status: 'OK',

@@ -1,12 +1,12 @@
 'use strict'
-const _ = require('lodash')
+const { get, isNil } = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
 const { web3, getContractConfig } = require('../config')
 
 /**
  [1]. @NOTE: web3.eth.getBlock() is returning null sometimes. This is unexpected
- behaviour which is resolved using _.get().
+ behaviour which is resolved using get().
  */
 
 /* :: (object, object) -> Promise<object> */
@@ -18,7 +18,7 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
 
   while (txs.length < limit) {
     const block = await web3.eth.getBlock(blockNumber, true) /* [1] */
-    const transactions = _.get(block, 'transactions', []) /* [1] */
+    const transactions = get(block, 'transactions', []) /* [1] */
 
     if (transactions.length > 0) {
       txs.push(...transactions)
@@ -36,6 +36,17 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
 
 
 const { contracts } = getContractConfig()
+
+/* :: (object[], string, string[]) -> object[] */
+const getEventParams = (inputs, data, topics) => {
+  const decodedParams = web3.eth.abi.decodeLog(inputs, data, topics)
+  const params = inputs.map((input, idx) => ({
+    ...input,
+    value: decodedParams[idx]
+  }))
+
+  return params
+}
 
 /**
  [1]. A object with event ABI signature as keys and event ABI as value.
@@ -56,7 +67,7 @@ const getEventLogs = (eventsABI, logs) => {
 
     const { name } = eventABI
     const params = eventABI.inputs.length > 0
-      ? web3.eth.abi.decodeLog(eventABI.inputs, log.data, log.topics)
+      ? getEventParams(eventABI.inputs, log.data, log.topics)
       : null
 
     return { ...log, name, params }
@@ -65,8 +76,8 @@ const getEventLogs = (eventsABI, logs) => {
   return logs.map(addInfo)
 }
 
-/* :: string -> Promise<object> */
-const getTransaction = async (txHash) => {
+/* :: (object, string) -> Promise<object> */
+const getTransaction = async (web3, txHash) => {
   const [ transaction, { logs } ] = await Promise.all([
     web3.eth.getTransaction(prefixHex(txHash)),
     web3.eth.getTransactionReceipt(prefixHex(txHash))
@@ -77,7 +88,7 @@ const getTransaction = async (txHash) => {
 
   /** Check if the transaction is for a known contract. Return extra info if true. */
   const contractInfo = contracts[transaction.to]
-  if (!_.isNil(contractInfo)) {
+  if (!isNil(contractInfo)) {
     abiDecoder.addABI(contractInfo.abi)
     const info = abiDecoder.decodeMethod(transaction.input)
 
