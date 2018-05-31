@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import isEmpty from 'lodash/isEmpty'
 import isString from 'lodash/isString'
+import capitalize from 'lodash/capitalize'
 import ReactJson from 'react-json-view'
 import Text from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'
@@ -18,22 +19,58 @@ import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import style from './style.module.scss'
 
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white
+  },
+  body: {
+    fontSize: 14
+  }
+}))(TableCell)
+
 const EventLogs = ({ logs }) => (
   <section className={style.root}>
     <div className={style.title}>
-      <Text variant="title">
-        Event Logs
-      </Text>
+      <Text variant="title">Event Logs</Text>
     </div>
 
+    {/** @NOTE: Events with params are expanded to show params table */}
     {logs.map(({ id, data, topics, logIndex, name, params }, idx) => (
-      <ExpansionPanel key={id}>
+      <ExpansionPanel key={id} defaultExpanded={Array.isArray(params)}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Text>{isString(name) ? `${name}( )` : `Event ${idx + 1}`}</Text>
         </ExpansionPanelSummary>
+
         <ExpansionPanelDetails>
-          {isString(name)
-            ? <ReactJson src={{ id, logIndex, params }} />
+          {isString(name) && Array.isArray(params)
+            ? (
+              <div style={{ width: '100%' }}>
+                <Paper>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Param</TableCell>
+                        <TableCell>Type</TableCell>
+                        <TableCell>Indexed</TableCell>
+                        <TableCell>Value</TableCell>
+                      </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {params.map(param => (
+                        <TableRow key={param.name}>
+                          <CustomTableCell>{param.name}</CustomTableCell>
+                          <CustomTableCell>{param.type}</CustomTableCell>
+                          <CustomTableCell>{capitalize(String(param.indexed))}</CustomTableCell>
+                          <CustomTableCell>{String(param.value)}</CustomTableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Paper>
+              </div>
+            )
             : <ReactJson src={{ id, data, topics, logIndex }} />
           }
         </ExpansionPanelDetails>
@@ -45,16 +82,6 @@ const EventLogs = ({ logs }) => (
 EventLogs.propTypes = {
   logs: PropTypes.array.isRequired
 }
-
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell)
 
 const MethodParams = ({ name, params }) => (
   <section className={style.root}>
