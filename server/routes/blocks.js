@@ -1,11 +1,9 @@
 'use strict'
-const express = require('express')
-const { Joi, celebrate: validate } = require('celebrate')
+const Router = require('koa-router')
 const { web3 } = require('../config')
-const { withError } = require('./helpers')
 const { getBlocks: $getBlocks } = require('../model/blocks')
 
-const router = express.Router() // eslint-disable-line new-cap
+const router = new Router()
 
 
 /**
@@ -14,26 +12,26 @@ const router = express.Router() // eslint-disable-line new-cap
  +----------------------------------------------------------------------------+*/
 
 /* GET /api/v1/blocks */
-const getBlocks = withError(async (request, respond) => {
-  const { order, limit, offset } = request.query
+const getBlocks = async (ctx) => {
+  const { order, limit, offset } = ctx.query
   const blocks = await $getBlocks(web3, { order, limit, offset })
 
-  respond.json({
+  ctx.body = {
     status: 'OK',
     data: blocks
-  })
-})
+  }
+}
 
 /* GET /api/v1/blocks/:number */
-const getBlock = withError(async (request, respond) => {
-  const blockNumber = parseInt(request.params.number, 10)
+const getBlock = async (ctx) => {
+  const blockNumber = parseInt(ctx.params.number, 10)
   const block = await web3.eth.getBlock(blockNumber)
 
-  respond.json({
+  ctx.body = {
     status: 'OK',
     data: block
-  })
-})
+  }
+}
 
 
 /**
@@ -43,23 +41,11 @@ const getBlock = withError(async (request, respond) => {
 
 router.get(
   '/blocks',
-  validate({
-    query: Joi.object({
-      limit: Joi.number().positive().integer(),
-      offset: Joi.number().integer(),
-      order: Joi.string().only('asc', 'desc')
-    })
-  }),
   getBlocks
 )
 
 router.get(
   '/blocks/:number',
-  validate({
-    params: Joi.object({
-      number: Joi.number().integer().required()
-    })
-  }),
   getBlock
 )
 

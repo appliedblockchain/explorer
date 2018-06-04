@@ -1,12 +1,9 @@
 'use strict'
-const express = require('express')
-const { Joi, celebrate: validate } = require('celebrate')
-const { prefixHex } = require('@appliedblockchain/bdash')
+const Router = require('koa-router')
 const model = require('../model/transactions')
 const { web3 } = require('../config')
-const { withError } = require('./helpers')
 
-const router = express.Router() // eslint-disable-line new-cap
+const router = new Router()
 
 
 /**
@@ -15,26 +12,26 @@ const router = express.Router() // eslint-disable-line new-cap
  +----------------------------------------------------------------------------+*/
 
 /* GET /api/v1/transactions */
-const getTransactions = withError(async (request, respond) => {
-  const { limit } = request.query
+const getTransactions = async (ctx) => {
+  const { limit } = ctx.query
   const transactions = await model.getTransactions(web3, { limit })
 
-  respond.json({
+  ctx.body = {
     status: 'OK',
     data: transactions
-  })
-})
+  }
+}
 
 /* GET /api/v1/transactions/:txhash */
-const getTrasaction = withError(async (request, respond) => {
-  const { txhash } = request.params
+const getTrasaction = async (ctx) => {
+  const { txhash } = ctx.params
   const transaction = await model.getTransaction(web3, txhash)
 
-  respond.json({
+  ctx.body = {
     status: 'OK',
     data: transaction
-  })
-})
+  }
+}
 
 
 /**
@@ -44,21 +41,11 @@ const getTrasaction = withError(async (request, respond) => {
 
 router.get(
   '/transactions',
-  validate({
-    query: Joi.object({
-      limit: Joi.number().positive().integer()
-    })
-  }),
   getTransactions
 )
 
 router.get(
   '/transactions/:txhash',
-  validate({
-    params: Joi.object({
-      txhash: Joi.string().hex().length(64).required()
-    })
-  }),
   getTrasaction
 )
 
