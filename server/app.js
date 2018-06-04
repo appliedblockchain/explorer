@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const fs = require('fs')
+const http = require('http')
 const Koa = require('koa')
 const serve = require('koa-static')
 const errorHandler = require('./middlewares/errorHandler')
@@ -32,4 +33,6 @@ if (isProduction()) {
   })
 }
 
-module.exports = app
+const server = http.createServer(app.callback())
+
+module.exports = server
