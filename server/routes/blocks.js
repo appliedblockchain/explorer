@@ -1,5 +1,7 @@
 'use strict'
 const Router = require('koa-router')
+const validate = require('koa2-validation')
+const Joi = require('joi')
 const { web3 } = require('../config')
 const { getBlocks: $getBlocks } = require('../model/blocks')
 
@@ -41,11 +43,23 @@ const getBlock = async (ctx) => {
 
 router.get(
   '/blocks',
+  validate({
+    query: Joi.object({
+      limit: Joi.number().positive().integer(),
+      offset: Joi.number().integer(),
+      order: Joi.string().only('asc', 'desc')
+    })
+  }),
   getBlocks
 )
 
 router.get(
   '/blocks/:number',
+  validate({
+    params: Joi.object({
+      number: Joi.number().integer().required()
+    })
+  }),
   getBlock
 )
 

@@ -1,5 +1,7 @@
 'use strict'
 const Router = require('koa-router')
+const validate = require('koa2-validation')
+const Joi = require('joi')
 const model = require('../model/transactions')
 const { web3 } = require('../config')
 
@@ -41,11 +43,21 @@ const getTrasaction = async (ctx) => {
 
 router.get(
   '/transactions',
+  validate({
+    query: Joi.object({
+      limit: Joi.number().positive().integer()
+    })
+  }),
   getTransactions
 )
 
 router.get(
   '/transactions/:txhash',
+  validate({
+    params: Joi.object({
+      txhash: Joi.string().hex().length(64).required()
+    })
+  }),
   getTrasaction
 )
 
