@@ -2,7 +2,7 @@
 const { get, isNil } = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
-const { web3, getContractConfig } = require('../config')
+const { web3, contracts } = require('../config')
 
 /**
  [1]. @NOTE: web3.eth.getBlock() is returning null sometimes. This is unexpected
@@ -35,7 +35,6 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
 }
 
 
-const { contracts } = getContractConfig()
 
 /* :: (object[], string, string[]) -> object[] */
 const getEventParams = (inputs, data, topics) => {
@@ -49,19 +48,13 @@ const getEventParams = (inputs, data, topics) => {
 }
 
 /**
- [1]. A object with event ABI signature as keys and event ABI as value.
- [2]. Since we know that the transaction is a calling a known contract we can
+ [1]. Since we know that the transaction is a calling a known contract we can
  get the event name and params using the contract ABI.
  */
 
 /* :: (object, Array<object>) -> Array<object> */
-const getEventLogs = (eventsABI, logs) => {
-  const eventSigs = eventsABI.reduce((sigs, eventABI) => ({ /* [1] */
-    ...sigs,
-    [web3.eth.abi.encodeEventSignature(eventABI)]: eventABI
-  }), {})
-
-  const addInfo = (log) => { /* [2] */
+const getEventLogs = (eventSigs, logs) => {
+  const addInfo = (log) => { /* [1] */
     const [ eventSig ] = log.topics
     const eventABI = eventSigs[eventSig]
 
@@ -75,6 +68,16 @@ const getEventLogs = (eventsABI, logs) => {
 
   return logs.map(addInfo)
 }
+
+/** [1]. Given a contracts ABI return { [eventSig]: eventABI } */
+
+/* :: object[] -> object */
+const getEventSigs = contractABI => contractABI
+  .filter(({ type }) => type === 'event')
+  .reduce((sigs, eventABI) => ({ /* [1] */
+    ...sigs,
+    [web3.eth.abi.encodeEventSignature(eventABI)]: eventABI
+  }), {})
 
 /* :: (object, string) -> Promise<object> */
 const getTransaction = async (web3, txHash) => {
@@ -97,14 +100,15 @@ const getTransaction = async (web3, txHash) => {
     transaction.params = info.params
     transaction.toName = contractInfo.name
 
-    const eventsABI = contractInfo.abi.filter(({ type }) => type === 'event')
-    transaction.logs = getEventLogs(eventsABI, logs)
+    const eventsSigs = getEventSigs(contractInfo.abi)
+    transaction.logs = getEventLogs(eventsSigs, logs)
   }
 
   return transaction
 }
 
 module.exports = {
+  getEventParams,
   getTransactions,
   getTransaction
 }
