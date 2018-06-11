@@ -109,6 +109,8 @@ const getTransaction = async (web3, txHash) => {
 
 module.exports = {
   getEventParams,
+  getEventSigs,
+  getEventLogs,
   getTransactions,
   getTransaction
 }
