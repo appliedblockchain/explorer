@@ -24,6 +24,8 @@
   display: block;
   max-width: 708px;
   overflow: auto;
+  word-wrap: break-word;
+  font-family: menlo, 'Courier New', Courier, monospace;
 }
 
 .methodName {
