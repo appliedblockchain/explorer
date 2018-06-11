@@ -1,7 +1,4 @@
-FROM node:10.1.0
-
-# Node 10 comes with npm v5.6 which can cause issues with npm v6 lockfiles.
-RUN npm install -g npm
+FROM node:10.3.0
 
 # Add non-root user with account name & user group name 'explorer'.
 # [Node best practice]

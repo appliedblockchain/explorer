@@ -1,12 +1,11 @@
 'use strict'
-const express = require('express')
-const { Joi, celebrate: validate } = require('celebrate')
-const { prefixHex } = require('@appliedblockchain/bdash')
+const Router = require('koa-router')
+const validate = require('koa2-validation')
+const Joi = require('joi')
 const model = require('../model/transactions')
 const { web3 } = require('../config')
-const { withError } = require('./helpers')
 
-const router = express.Router() // eslint-disable-line new-cap
+const router = new Router()
 
 
 /**
@@ -15,31 +14,26 @@ const router = express.Router() // eslint-disable-line new-cap
  +----------------------------------------------------------------------------+*/
 
 /* GET /api/v1/transactions */
-const getTransactions = withError(async (request, respond) => {
-  const { limit } = request.query
+const getTransactions = async (ctx) => {
+  const { limit } = ctx.query
   const transactions = await model.getTransactions(web3, { limit })
 
-  respond.json({
+  ctx.body = {
     status: 'OK',
     data: transactions
-  })
-})
+  }
+}
 
 /* GET /api/v1/transactions/:txhash */
-const getTrasaction = withError(async (request, respond) => {
-  const { txhash } = request.params
-  const [ transaction, { logs } ] = await Promise.all([
-    web3.eth.getTransaction(prefixHex(txhash)),
-    web3.eth.getTransactionReceipt(prefixHex(txhash))
-  ])
+const getTrasaction = async (ctx) => {
+  const { txhash } = ctx.params
+  const transaction = await model.getTransaction(web3, txhash)
 
-  transaction.logs = logs
-
-  respond.json({
+  ctx.body = {
     status: 'OK',
     data: transaction
-  })
-})
+  }
+}
 
 
 /**

@@ -1,5 +1,6 @@
 'use strict'
 
 module.exports = {
-  log: require('./log')
+  log: require('./log'),
+  fileExistsSync: require('./fileExistsSync')
 }

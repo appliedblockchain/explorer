@@ -7,45 +7,16 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import { Link } from 'react-router-dom'
+import MethodParams from './MethodParams'
+import EventLogs from './EventLogs'
 import style from './style.module.scss'
-
-const EventLogs = ({ logs }) => (
-  <section>
-    <div className={style.title}>
-      <Text variant="title">
-        Event Logs
-      </Text>
-    </div>
-
-    {logs.map(({ data, topics, logIndex }, idx) => (
-      <ExpansionPanel key={idx}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Text>Event {idx + 1}</Text>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <pre>{JSON.stringify({ data, topics, logIndex }, null, 2)}</pre>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    ))}
-  </section>
-)
-
-EventLogs.propTypes = {
-  logs: PropTypes.array.isRequired
-}
 
 const TransactionView = ({ info }) => (
   <Fragment>
     <section className={style.root}>
       <div className={style.title}>
-        <Text variant="title">
-          Transaction Info
-        </Text>
+        <Text variant="title">Transaction Info</Text>
       </div>
 
       <Paper>
@@ -63,6 +34,7 @@ const TransactionView = ({ info }) => (
             <TableRow>
               <TableCell component="th" scope="row">To</TableCell>
               <TableCell>
+                {info.enhanced && <span>{info.toName}—</span>}
                 <span className={style.mono}>{info.to}</span>
               </TableCell>
             </TableRow>
@@ -95,6 +67,7 @@ const TransactionView = ({ info }) => (
       </Paper>
     </section>
 
+    {info.enhanced && <MethodParams name={info.method} params={info.params} />}
     {!isEmpty(info.logs) && <EventLogs logs={info.logs} />}
   </Fragment>
 )

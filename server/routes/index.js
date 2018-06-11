@@ -1,16 +1,13 @@
 'use strict'
-const express = require('express')
-const createError = require('http-errors')
+const Router = require('koa-router')
 const blocks = require('./blocks')
-const transactions = require('./transactions')
+const transactions = require('./transaction')
 
-const api = express.Router() // eslint-disable-line new-cap
+/** Routes */
+const api = new Router({ prefix: '/api/v1' })
 
-/** ⭐️ API Routes */
-api.use(blocks)
-api.use(transactions)
-
-/** 🧐 Catch unknown API routes */
-api.use((req, res, next) => next(createError(404, `Path '${req.path}' does not exist.`)))
+api
+  .use(blocks.routes())
+  .use(transactions.routes())
 
 module.exports = api

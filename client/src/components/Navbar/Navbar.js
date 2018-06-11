@@ -1,18 +1,33 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Text from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
-import styles from './style.module.scss'
+import { withStyles } from '@material-ui/core/styles'
+import Logo from './Logo'
 
-const Navbar = () => (
-  <AppBar position="static" color="primary">
-    <Toolbar>
-      <Text variant="title" color="inherit">
-        <Link to="/" className={styles.link}>Block Explorer</Link>
-      </Text>
+const styles = {
+  appbar: {
+    backgroundColor: '#4396ec'
+  },
+  toolbar: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+}
+
+const Navbar = ({ classes }) => (
+  <AppBar position="static" className={classes.appbar}>
+    <Toolbar className={classes.toolbar}>
+      <Link to="/" className={styles.link}>
+        <Logo />
+      </Link>
     </Toolbar>
   </AppBar>
 )
 
-export default Navbar
+Navbar.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+
+export default withStyles(styles)(Navbar)
