@@ -1,5 +1,5 @@
 'use strict'
-const { get, isNil } = require('lodash')
+const { get, isNil, pickBy, isEmpty } = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
 const { web3, getProjectConfig } = require('../config')
@@ -79,6 +79,23 @@ const getEventSigs = contractABI => contractABI
     [web3.eth.abi.encodeEventSignature(eventABI)]: eventABI
   }), {})
 
+/* :: string -> ?object */
+const getContractInfo = (contracts, address) => {
+  const contract = pickBy(
+    contracts,
+    ({ deployments = [] }) => deployments.includes(address)
+  )
+
+  if (isEmpty(contract)) {
+    return null
+  }
+
+  const [ name ] = Object.keys(contract)
+  const { abi } = contract[name]
+
+  return { name, abi }
+}
+
 /* :: (object, string) -> Promise<object> */
 const getTransaction = async (web3, txHash) => {
   const [ transaction, { logs } ] = await Promise.all([
@@ -91,7 +108,7 @@ const getTransaction = async (web3, txHash) => {
 
   /** Check if the transaction is for a known contract. Return extra info if true. */
   const { contracts } = await getProjectConfig()
-  const contractInfo = contracts[transaction.to]
+  const contractInfo = getContractInfo(contracts, transaction.to)
   if (!isNil(contractInfo)) {
     abiDecoder.addABI(contractInfo.abi)
     const info = abiDecoder.decodeMethod(transaction.input)
