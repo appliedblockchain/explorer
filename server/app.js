@@ -26,7 +26,7 @@ app
 /** React client index.html is only served in production which handles routing. */
 if (isProduction()) {
   const indexPath = path.resolve(clientDir, 'index.html')
-  const clientIndex = fs.readFileSync(indexPath)
+  const clientIndex = fs.readFileSync(indexPath, 'utf8')
 
   app.use((ctx) => {
     ctx.body = clientIndex
