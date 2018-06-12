@@ -2,7 +2,7 @@
 const { get, isNil } = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
-const { web3, contracts } = require('../config')
+const { web3, getProjectConfig } = require('../config')
 
 /**
  [1]. @NOTE: web3.eth.getBlock() is returning null sometimes. This is unexpected
@@ -38,7 +38,7 @@ const getTransactions = async (web3, { limit = 10 } = {}) => {
 
 /* :: (object[], string, string[]) -> object[] */
 const getEventParams = (inputs, data, topics) => {
-  const decodedParams = web3.eth.abi.decodeLog(inputs, data, topics)
+  const decodedParams = web3.eth.abi.decodeLog(inputs, data, topics.slice(1))
   const params = inputs.map((input, idx) => ({
     ...input,
     value: decodedParams[idx]
@@ -90,6 +90,7 @@ const getTransaction = async (web3, txHash) => {
   transaction.enhanced = false
 
   /** Check if the transaction is for a known contract. Return extra info if true. */
+  const { contracts } = await getProjectConfig()
   const contractInfo = contracts[transaction.to]
   if (!isNil(contractInfo)) {
     abiDecoder.addABI(contractInfo.abi)

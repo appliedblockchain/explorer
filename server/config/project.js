@@ -1,16 +1,23 @@
 'use strict'
 const path = require('path')
+const fs = require('fs-extra')
 const { fileExistsSync } = require('../utils')
 
 /** @NOTE: By default we assume there is a project config file at root */
 const defaultConfigPath = path.resolve(__dirname, '../../config.json')
 const projectConfigPath = process.env.CONFIG_FILE_PATH || defaultConfigPath
 
-const { contracts, addressBook } = fileExistsSync(projectConfigPath)
-  ? require(projectConfigPath)
-  : {
-    addressBook: {},
-    contracts: {}
+/* :: () -> Promise<object> */
+const getProjectConfig = async () => {
+  if (!fileExistsSync(projectConfigPath)) {
+    return {
+      addressBook: {},
+      contracts: {}
+    }
   }
 
-module.exports = { contracts, addressBook }
+  const config = await fs.readJson(projectConfigPath)
+  return config
+}
+
+module.exports = { getProjectConfig }
