@@ -9,10 +9,6 @@ jobs:
       - checkout
 
       - run: npm install
-      - run:
-          working_directory: ./client
-          command: npm install
-
       - run: npm run build
 
       - run: docker build -t appliedblockchain/b-explorer .
