@@ -1,5 +1,5 @@
 'use strict'
-const { get, isNil, pickBy, isEmpty, first } = require('lodash')
+const { get, isNil, pickBy, first } = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
 const { web3, getProjectConfig } = require('../config')
