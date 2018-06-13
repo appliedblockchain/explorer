@@ -1,5 +1,5 @@
 'use strict'
-const { get, isNil, pickBy, first } = require('lodash')
+const { get, isNil, pickBy, first, isUndefined } = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
 const { web3, getProjectConfig } = require('../config')
@@ -50,6 +50,7 @@ const getEventParams = (inputs, data, topics) => {
 /**
  [1]. Since we know that the transaction is a calling a known contract we can
  get the event name and params using the contract ABI.
+ [2]. This event is unknown (i.e emitted from another contract)
  */
 
 /* :: (object, Array<object>) -> Array<object> */
@@ -57,6 +58,10 @@ const getEventLogs = (eventSigs, logs) => {
   const addInfo = (log) => { /* [1] */
     const [ eventSig ] = log.topics
     const eventABI = eventSigs[eventSig]
+
+    if (isUndefined(eventABI)) { /* [2] */
+      return log
+    }
 
     const { name } = eventABI
     const params = eventABI.inputs.length > 0
