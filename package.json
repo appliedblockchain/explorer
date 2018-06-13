@@ -2,8 +2,9 @@
   "name": "b-explorer",
   "version": "0.1.0",
   "private": true,
-  "author": "Tahseen Malik <hello@tahseen.me> (https://tahseenmalik.com/)",
+  "author": "Tahseen Malik <tahseen@appliedblockchain.com> (https://appliedblockchain.com/)",
   "scripts": {
+    "postinstall": "./run -i",
     "start": "node server/.",
     "start:dev": "concurrently -n S,A \"npm run api\" \"npm run client\"",
     "api": "NODE_ENV=development PORT=3001 nodemon server/.",
