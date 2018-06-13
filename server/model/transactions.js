@@ -1,5 +1,5 @@
 'use strict'
-const { get, isNil, pickBy, isEmpty, pick } = require('lodash')
+const { get, isNil, pickBy, isEmpty, first } = require('lodash')
 const abiDecoder = require('abi-decoder')
 const { prefixHex } = require('@appliedblockchain/bdash')
 const { web3, getProjectConfig } = require('../config')
@@ -81,19 +81,11 @@ const getEventSigs = contractABI => contractABI
 
 /* :: string -> ?object */
 const getContractInfo = (contracts, address) => {
-  const hasAddress = deployment => deployment.address === address
-  const contractHasAddress = ({ deployments = [] }) =>
-    !isEmpty(pickBy(deployments, hasAddress))
+  const hasAddress = ({ deployments = [] }) =>
+    deployments.some(deployment => address === deployment.address)
+  const contract = pickBy(contracts, hasAddress)
 
-  const contract = pickBy(contracts, contractHasAddress)
-
-  if (isEmpty(contract)) {
-    return null
-  }
-
-  const [ name ] = Object.keys(contract)
-
-  return pick(contract[name], 'abi', 'name')
+  return first(Object.values(contract))
 }
 
 /* :: (object, string) -> Promise<object> */
