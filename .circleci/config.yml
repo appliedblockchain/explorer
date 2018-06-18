@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: Build Docker image
-          command: docker build -t appliedblockchain/b-explorer . --build-arg="NPM_TOKEN=$NPM_TOKEN"
+          command: docker build -t appliedblockchain/b-explorer . --build-arg="NPM_TOKEN=$PRIVATE_NPM_TOKEN"
       - run:
           name: Push Docker image
           command: |

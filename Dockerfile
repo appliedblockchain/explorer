@@ -1,5 +1,7 @@
 FROM node:10.3.0
 
+ARG NPM_TOKEN
+
 # Add non-root user with account name & user group name 'explorer'.
 # [Node best practice]
 RUN useradd --user-group --create-home --shell /bin/false explorer
