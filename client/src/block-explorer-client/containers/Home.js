@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import isNull from 'lodash/isNull'
-import { Navbar, Main, HomeView, Loading } from '../components'
+import { Navbar, Main, Loading } from '../components'
 import * as api from '../api'
 
-export class Home extends Component {
+/* :: Function -> Function */
+export const createHome = HomeView => class Home extends Component {
   state = {
     blocks: null,
     transactions: null

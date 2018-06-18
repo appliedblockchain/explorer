@@ -1,8 +1,0 @@
-version: '2.0'
-
-services:
-  appliedblockchain/b-explorer:
-    build: .
-    restart: always
-    ports:
-      - 3000:3000

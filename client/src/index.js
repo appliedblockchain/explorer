@@ -1,6 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.scss'
-import App from './containers/App'
+
+/** @TODO: '@appliedblockchain/block-explorer-client' */
+import './block-explorer-client/index.scss'
+import { createApp } from './block-explorer-client'
+
+const App = createApp()
 
 ReactDOM.render(<App />, document.getElementById('root'))
