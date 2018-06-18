@@ -21,9 +21,8 @@ USER explorer
 
 WORKDIR $HOME/app
 
-RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-RUN npm install
-RUN rm ~/.npmrc
+# Install private npm module using token
+RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc && npm install && rm ~/.npmrc
 
 EXPOSE 3000
 
