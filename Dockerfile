@@ -8,8 +8,8 @@ ENV HOME=/home/explorer
 ENV NODE_ENV=production
 
 # Copy app files to container before switching to non-root user.
-COPY package.json $HOME/app/
-COPY server $HOME/app/server
+COPY package.json server.js $HOME/app/
+COPY build $HOME/app/build
 
 # Change ownership to allow installing npm dependencies.
 RUN chown -R explorer:explorer $HOME/*
@@ -18,7 +18,10 @@ RUN chown -R explorer:explorer $HOME/*
 USER explorer
 
 WORKDIR $HOME/app
+
+RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 RUN npm install
+RUN rm ~/.npmrc
 
 EXPOSE 3000
 

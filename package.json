@@ -4,29 +4,20 @@
   "private": true,
   "author": "Tahseen Malik <tahseen@appliedblockchain.com> (https://appliedblockchain.com/)",
   "scripts": {
-    "start": "node server/.",
+    "start": "node server.js",
     "start:dev": "concurrently -n S,A \"npm run api\" \"npm run client\"",
-    "api": "NODE_ENV=development PORT=3001 nodemon server/.",
+    "api": "NODE_ENV=development PORT=3001 nodemon server.js",
     "client": "./run -s start",
     "test": "jest",
     "lint": "eslint server",
-    "clean": "rimraf server/client",
+    "clean": "rimraf build",
     "prebuild": "npm run clean",
     "build": "./run -s build",
-    "postbuild": "mv client/build server/client"
+    "postbuild": "mv client/build ./build"
   },
   "dependencies": {
-    "@appliedblockchain/bdash": "^0.2.1",
-    "abi-decoder": "^1.1.0",
-    "fs-extra": "^6.0.1",
-    "joi": "^13.3.0",
-    "koa": "^2.5.1",
-    "koa-router": "^7.4.0",
-    "koa-static": "^4.0.3",
-    "koa2-validation": "^0.1.0",
-    "lodash": "^4.17.10",
-    "signale": "^1.0.1",
-    "web3": "1.0.0-beta.33"
+    "@appliedblockchain/block-explorer-server": "^0.2.0",
+    "koa-static": "^4.0.3"
   },
   "devDependencies": {
     "@appliedblockchain/eslint-config": "^2.2.0",
