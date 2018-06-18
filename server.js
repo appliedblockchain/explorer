@@ -4,9 +4,16 @@ const path = require('path')
 const serve = require('koa-static')
 const { createServer } = require('@appliedblockchain/block-explorer-server')
 
-const app = createServer({ prefix: '/api/v1' })
+const ethereumJsonRPC = process.env.ETHEREUM_JSONRPC_ENDPOINT || 'http://localhost:8546'
+const networkConfigPath = process.env.CONFIG_FILE_PATH || path.resolve('./config.json')
 
-/** @NOTE: server/client includes the SPA client production build. */
+const app = createServer({
+  ethereumJsonRPC,
+  networkConfigPath,
+  prefix: '/api/v1'
+})
+
+/** @NOTE: /build includes the SPA client production build. */
 if (process.env.NODE_ENV === 'production') {
   const clientDir = path.resolve(__dirname, 'build')
   app.use(serve(clientDir))
