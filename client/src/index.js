@@ -1,9 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-/** @TODO: '@appliedblockchain/block-explorer-client' */
-import './block-explorer-client/index.scss'
-import { createApp } from './block-explorer-client'
+import { createApp } from '@appliedblockchain/block-explorer-client'
+import '@appliedblockchain/block-explorer-client/index.scss'
 
 const App = createApp()
 
