@@ -12,11 +12,6 @@ jobs:
           name: Authorize NPM
           command: echo "//registry.npmjs.org/:_authToken=$PRIVATE_NPM_TOKEN" > ~/.npmrc
       - run: npm install
-      - run:
-          name: Install SPA client dependencies
-          working_directory: ./client
-          command: npm install
-
       - run: npm run build
 
       - run:
