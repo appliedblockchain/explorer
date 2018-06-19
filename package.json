@@ -1,33 +1,37 @@
 {
-  "name": "b-explorer",
+  "name": "block-explorer",
   "version": "0.1.0",
   "private": true,
-  "author": "Tahseen Malik <tahseen@appliedblockchain.com> (https://appliedblockchain.com/)",
+  "author": "Tahseen Malik <hello@tahseen.me> (https://tahseenmalik.com/)",
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions"
+    ],
+    "production": [
+      "> 1%",
+      "not IE <= 11"
+    ]
+  },
+  "proxy": "http://localhost:3001/",
   "scripts": {
-    "start": "node server.js",
-    "start:dev": "concurrently -n S,A \"npm run api\" \"npm run client\"",
-    "api": "NODE_ENV=development PORT=3001 nodemon server.js",
-    "client": "./run -s start",
-    "test": "jest",
-    "lint": "eslint server",
-    "clean": "rimraf build",
-    "prebuild": "npm run clean",
-    "build": "./run -s build",
-    "postbuild": "mv client/build ./build"
+    "start": "concurrently -n S,A \"npm run start:api\" \"npm run start:client\"",
+    "start:client": "react-scripts start",
+    "start:api": "NODE_ENV=development PORT=3001 nodemon server.js",
+    "prebuild": "rimraf build",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "@appliedblockchain/block-explorer-server": "^0.2.0",
     "koa-static": "^4.0.3"
   },
   "devDependencies": {
-    "@appliedblockchain/eslint-config": "^2.2.0",
+    "@appliedblockchain/block-explorer-client": "^0.3.4",
     "concurrently": "^3.5.1",
-    "eslint": "4.15.0",
-    "jest": "22.1.2",
-    "nodemon": "^1.17.4",
-    "rimraf": "^2.6.2",
-    "supertest": "^3.1.0",
-    "webpack": "3.10.0",
-    "yargs": "^11.0.0"
+    "node-sass": "^4.9.0",
+    "nodemon": "^1.17.5",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "^2.0.0-next.66cc7a90",
+    "rimraf": "^2.6.2"
   }
 }

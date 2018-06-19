@@ -27,4 +27,4 @@ RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc && npm install
 EXPOSE 3000
 
 # Lets run it :)
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
