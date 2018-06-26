@@ -21,11 +21,9 @@
     "build": "react-scripts build"
   },
   "dependencies": {
-    "@appliedblockchain/block-explorer-server": "^0.2.0",
     "koa-static": "^4.0.3"
   },
   "devDependencies": {
-    "@appliedblockchain/block-explorer-client": "^0.3.4",
     "concurrently": "^3.5.1",
     "node-sass": "^4.9.0",
     "nodemon": "^1.17.5",

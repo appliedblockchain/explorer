@@ -7,16 +7,9 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
-
-      - run:
-          name: Authorize NPM
-          command: echo "//registry.npmjs.org/:_authToken=$PRIVATE_NPM_TOKEN" > ~/.npmrc
-      - run: npm install
-      - run: npm run build
-
       - run:
           name: Build Docker image
-          command: docker build -t appliedblockchain/b-explorer . --build-arg="NPM_TOKEN=$PRIVATE_NPM_TOKEN"
+          command: docker build -t appliedblockchain/b-explorer --build-arg="NPM_TOKEN=$PRIVATE_NPM_TOKEN" .
       - run:
           name: Push Docker image
           command: |
