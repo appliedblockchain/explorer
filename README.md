@@ -222,8 +222,64 @@ At present, we aim to support the last two versions of the following browsers:
 > npm install @appliedblockchain/block-explorer-server
 ```
 
-#### Description
-@TODO
+<p align="center">
+  <img src="/media/block-explorer-server.jpg" alt="block-explorer-server npm module" />
+</p>
+
+#### Usage
+```js
+import { createServer } from '@appliedblockchain/block-explorer-server'
+
+/** Koa server */
+const server = createServer({ /* options */ })
+
+server.listen(3000)
+```
+
+#### `createServer.options`
+<table>
+  <thead>
+    <tr>
+      <td>Option</td>
+      <td>Type</td>
+      <td>Default Value</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><code>prefix</code></td>
+      <td>String</td>
+      <td><code>false</code></td>
+      <td>Creates a Koa server instance where all the API routes are prefixed with the given prefix value.</td>
+    </tr>
+    <tr>
+      <td><code>ethereumJsonRPC</code></td>
+      <td>String</td>
+      <td><code>'http://localhost:8546'</code></td>
+      <td>HTTP JSON-RPC  endpoint for a node on the ethereum based network.</td>
+    </tr>
+    <tr>
+      <td><code>networkConfigPath</code></td>
+      <td>String</td>
+      <td><code>path.resolve('./config.json')</code></td>
+      <td>Path to the <code>config.json</code> file used by the standard handler to get contract information.</td>
+    </tr>
+    <tr>
+      <td><code>useStandardHandler</code></td>
+      <td>Boolean</td>
+      <td><code>true</code></td>
+      <td>Toggle standard handler use.</td>
+    </tr>
+    <tr>
+      <td><code>txHandler</code></td>
+      <td>Function</td>
+      <td><code>null</code></td>
+      <td>Customise the output of <code>/transactions/:txHash</code> route.</td>
+    </tr>
+  </tbody>
+</table>
 <p>&nbsp;</p><!-- Spacing -->
 
 
