@@ -48,11 +48,23 @@ The goal of this project is to have a single Block explorer for all Applied Bloc
   - Docker
 - [Getting Started](#getting-started)
   - [Using Docker Image](#🐳-using-docker-image)
+    - Simple `docker-compose.yml` example _(without config.json)_
+    - `docker-compose.yml` example _(with config.json)_
+    - `config.json` example
   - [`create-block-explorer`](#⚡️-create-block-explorer)
+    - Usage
+    - Scripts
 - [Browser Support](#browser-support)
 - [Modules](#modules)
   - [`block-explorer-server`](#block-explorer-server)
+    - Installation
+    - Usage
+    - `createServer()` options
+    - Server routes
   - [`block-explorer-client`](#block-explorer-client)
+    - Installation
+    - Usage
+    - `createApp()` options
 - [Examples](#examples)
 - [Repositories](#repositories)
 - [Contributors](#contributors)
@@ -83,7 +95,7 @@ block-explorer/
   └── docker-compose.yml
 ```
 
-#### Simple `docker-compose.yml` example _(Without config.json)_
+#### Simple `docker-compose.yml` example _(without config.json)_
 ```yml
 version: '3'
 
@@ -96,7 +108,7 @@ services:
       - ETHEREUM_JSONRPC_ENDPOINT=http://network.project.com:8545/
 ```
 
-#### `docker-compose.yml` example _(With config.json)_
+#### `docker-compose.yml` example _(with config.json)_
 ```yml
 version: '3'
 
@@ -154,7 +166,7 @@ __`create-block-explorer`__ is the quickest way to get started with creating a B
 ```
 
 <p align="center">
-  <img width="85%" src="/media/create-block-explorer.gif" alt="create block explorer CLI usage" />
+  <img width="100%" src="/media/create-block-explorer.gif" alt="create block explorer CLI usage" />
 </p>
 
 #### Project structure
@@ -236,7 +248,7 @@ const server = createServer({ /* options */ })
 server.listen(3000)
 ```
 
-#### `createServer.options`
+#### `createServer()` options
 <table>
   <thead>
     <tr>
@@ -280,6 +292,12 @@ server.listen(3000)
     </tr>
   </tbody>
 </table>
+
+#### Server routes
+- `/transactions`
+- `/transactions/:txHash`
+- `/blocks`
+- `/blocks/:number`
 <p>&nbsp;</p><!-- Spacing -->
 
 
@@ -289,13 +307,79 @@ server.listen(3000)
 > npm install @appliedblockchain/block-explorer-client
 ```
 
-#### Description
-@TODO
+#### Usage
+```jsx
+import React from 'react'
+import { render } from 'react-dom'
+import { createApp } from '@appliedblockchain/block-explorer-client'
+
+/** Block explorer styling */
+import '@appliedblockchain/block-explorer-client/index.scss'
+
+const App = createApp({ /* options */ })
+
+render(<App />, document.querySelector('#root'))
+```
+
+#### `createApp()` options
+<table>
+  <thead>
+    <tr>
+      <td>Option</td>
+      <td>Type</td>
+      <td>Default Value</td>
+      <td>Description</td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><code>navbar</code></td>
+      <td>Function</td>
+      <td>
+        <code>
+          <a href="https://github.com/appliedblockchain/block-explorer-client/blob/master/src/components/Navbar/Navbar.js">@appliedblockchain/block-explorer-client/components/Navbar</a>
+        </code>
+      </td>
+      <td>React presentational component to render the navbar.</td>
+    </tr>
+    <tr>
+      <td><code>homepage</code></td>
+      <td>Function</td>
+      <td>
+        <code>
+          <a href="https://github.com/appliedblockchain/block-explorer-client/blob/master/src/components/HomeView/HomeView.js">@appliedblockchain/block-explorer-client/components/HomeView</a>
+        </code>
+      </td>
+      <td>React presentational component to render the home page.</td>
+    </tr>
+    <tr>
+      <td><code>blockPage</code></td>
+      <td>Function</td>
+      <td>
+        <code>
+          <a href="https://github.com/appliedblockchain/block-explorer-client/blob/master/src/components/BlockView/BlockView.js">@appliedblockchain/block-explorer-client/components/BlockView</a>
+        </code>
+      </td>
+      <td>React presentational component to render the view block page.</td>
+    </tr>
+    <tr>
+      <td><code>transactionPage</code></td>
+      <td>Function</td>
+      <td>
+        <code>
+          <a href="https://github.com/appliedblockchain/block-explorer-client/blob/master/src/components/TransactionView/TransactionView.js">@appliedblockchain/block-explorer-client/components/TransactionView</a>
+        </code>
+      </td>
+      <td>React presentational component to render the view transaction page.</td>
+    </tr>
+  </tbody>
+</table>
 <p>&nbsp;</p><!-- Spacing -->
 
 
 ## Examples
-- [APPII](https://github.com/appliedblockchain/appii-block-explorer)
+- [APPII Block explorer](https://github.com/appliedblockchain/appii-block-explorer)
 <p>&nbsp;</p><!-- Spacing -->
 
 
