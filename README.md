@@ -11,23 +11,12 @@
   <img width="100%" src="/media/banner.png" />
 </p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>Sponsored by</td>
-      <td>
-        <a href="https://appliedblockchain.com/">
-          <img height="45" src="/media/appliedblockchain-logo.png" alt="Applied Blockchain" />
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+
 <p>&nbsp;</p><!-- Spacing -->
 
 
 ## Project
-The goal of this project is to have a single Block explorer for all Applied Blockchain projects that is both simple and easy to customise. The standard Block explorer comes as a single Docker image and custom Block explorers can be created using a CLI tool.
+The goal of this project is to have a single Block explorer that is both simple and easy to customise. The standard Block explorer comes as a single Docker image and custom Block explorers can be created using a CLI tool.
 
 ### Features
 - 🖥 View latest Blocks & Transactions
