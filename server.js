@@ -30,3 +30,6 @@ const port = process.env.PORT || 3000
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`)
 })
+
+/** Exit on `CTRL-C` */
+process.on('SIGINT', () => process.exit())
