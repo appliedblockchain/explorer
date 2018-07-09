@@ -1,6 +1,6 @@
 {
   "name": "block-explorer",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": true,
   "author": "Tahseen Malik <hello@tahseen.me> (https://tahseenmalik.com/)",
   "browserslist": {
