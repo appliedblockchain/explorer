@@ -445,4 +445,4 @@ _In alphabetical order:_
 
 
 ## License
-_UNLICENSED_
+MIT license
