@@ -444,5 +444,4 @@ _In alphabetical order:_
 <p>&nbsp;</p><!-- Spacing -->
 
 
-## License
-_UNLICENSED_
+
