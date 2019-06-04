@@ -27,7 +27,8 @@
 
 
 ## Project
-The goal of this project is to have a single Block explorer for all Applied Blockchain projects that is both simple and easy to customise. The standard Block explorer comes as a single Docker image and custom Block explorers can be created using a CLI tool.
+
+Explorer is a simple and easily customizable blockchain explorer generation tool. The standard Block explorer comes as a single Docker image and custom Block explorers can be created using a CLI tool.
 
 ### Features
 - 🖥 View latest Blocks & Transactions
@@ -77,7 +78,7 @@ The goal of this project is to have a single Block explorer for all Applied Bloc
 The Block explorer requires [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) (npm comes prebundled with node) for development. The source code for the server is written in ES2015+ so Node.js **V8+** is recommended. Node.js version can be checked using the `node -v` CLI command.
 
 ### Docker
-Docker installtion is not required for development but can be useful for running the production app locally.
+Docker installation is not required for development but can be useful for running the production app locally.
 - [Docker Mac installtion](https://docs.docker.com/docker-for-mac/install/)
 - [Docker Window installtion](https://docs.docker.com/docker-for-windows/install/)
 - [Docker Linux installtion](https://docs.docker.com/install/)
@@ -376,12 +377,6 @@ render(<App />, document.querySelector('#root'))
   </tbody>
 </table>
 <p>&nbsp;</p><!-- Spacing -->
-
-
-## Examples
-- [APPII Block explorer](https://github.com/appliedblockchain/appii-block-explorer)
-<p>&nbsp;</p><!-- Spacing -->
-
 
 ## Repositories
 <table>
