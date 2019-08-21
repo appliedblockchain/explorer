@@ -431,7 +431,10 @@ _In alphabetical order:_
       <a href="https://github.com/tahseenm"><img src="https://avatars2.githubusercontent.com/u/8666625?v=4" /></a>
       <p align="center">Tahseen Malik <i>(Developer)</i></p>
     </td>
-    <td width="20%"></td>
+    <td width="20%">
+      <a href="https://github.com/makevoid"><img src="https://avatars2.githubusercontent.com/u/14677?v=4" /></a>
+      <p align="center">makevoid <i>(Developer)</i></p>
+    </td>
     <td width="20%"></td>
     <td width="20%"></td>
   </tr>
